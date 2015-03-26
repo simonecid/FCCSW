@@ -51,6 +51,7 @@ Setup the Gaudi environment
 
 Clone the FCCSW repository: **replace \<username\> by your github username**
 
+    cd $FCC
     git clone git@github.com:<username>/FCCSW.git FCCSW 
     export FCCSW=$FCCBASE/FCCSW
 
@@ -61,7 +62,6 @@ Set up your environment:
 
 Compile the FCC software:
 
-    cd $FCCSW
     make -j 12
 
 

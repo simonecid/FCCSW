@@ -1,20 +1,20 @@
 Universe = vanilla
-job = FCCRUN
+job = MinimumBiasGeneration_1000events
 cmd = FCCRunWrapper.sh
-args = $(cluster).$(process)
+args = -j $(job) -c $(cluster) -p $(process)
 # Better not to put logs in the same folder, as they are plenty
-output = $(job)_$(cluster).$(process).out
-error = $(job)_$(cluster).$(process).err
-log = $(job)_$(cluster).$(process).log
+output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
+error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err
+log = /storage/sb17498/logs/$(job)_$(cluster).$(process).log
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
 # Needed in case file must be fed in input
-# input	=	mymain00.cmnd
-# transfer_input_files	=	mymain00.cmnd
+input	=	/software/sb17498/FCCSW/Generation/data/Pythia_minbias_pp_100TeV.cmd
+transfer_input_files	=	/software/sb17498/FCCSW/Generation/data/Pythia_minbias_pp_100TeV.cmd
 
 
 request_cpus = 1
 request_memory = 300
 request_disk=100000
 
-queue 1
+queue 3

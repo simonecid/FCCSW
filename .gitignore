@@ -45,3 +45,6 @@ CTestTestfile.cmake
 CPackSourceConfig.cmake
 CPackConfig.cmake
 cmake_install.cmake
+*.out
+*.err
+*.log

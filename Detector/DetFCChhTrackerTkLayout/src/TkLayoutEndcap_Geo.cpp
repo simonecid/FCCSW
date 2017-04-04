@@ -1,6 +1,6 @@
 
-#include "DetCommon/DetUtils.h"
 #include "DD4hep/DetFactoryHelper.h"
+#include "DetCommon/DetUtils.h"
 
 using DD4hep::Geometry::Volume;
 using DD4hep::Geometry::DetElement;
@@ -17,8 +17,8 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   Dimension dimensions(xmlDet.dimensions());
 
   // get sensitive detector type from xml
-  DD4hep::XML::Dimension sdTyp = xmlElement.child("sensitive");  // retrieve the type
-  sensDet.setType(sdTyp.typeStr());  // set for the whole detector
+  DD4hep::XML::Dimension sdTyp = xmlElement.child(_Unicode(sensitive));  // retrieve the type
+  sensDet.setType(sdTyp.typeStr());                                      // set for the whole detector
 
   // definition of top volume
   std::string detName = xmlDet.nameStr();
@@ -42,7 +42,7 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
   Volume envelopeVolume(detName, envelopeShape, lcdd.air());
   envelopeVolume.setVisAttributes(lcdd.invisible());
 
-  Component xDiscs = xmlElement.child("discs");
+  Component xDiscs = xmlElement.child(_Unicode(discs));
   Component xFirstDisc = xDiscs.child("discZPls");
   Component xFirstDiscRings = xFirstDisc.child("rings");
 
@@ -84,11 +84,13 @@ static DD4hep::Geometry::Ref_t createTkLayoutTrackerEndcap(DD4hep::Geometry::LCD
                              lcdd.material(xComp.materialStr()));
       PlacedVolume placedComponentVolume = moduleVolume.placeVolume(
           componentVolume,
-          DD4hep::Geometry::Position(
-              0, integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness") + 0.5 * xComp.thickness(), 0));
+          DD4hep::Geometry::Position(0,
+                                     integratedCompThickness - 0.5 * xModuleProperties.attr<double>("modThickness") +
+                                         0.5 * xComp.thickness(),
+                                     0));
       placedComponentVolume.addPhysVolID("component", componentCounter);
-      if( xComp.isSensitive() ){
-	componentVolume.setSensitiveDetector(sensDet);
+      if (xComp.isSensitive()) {
+        componentVolume.setSensitiveDetector(sensDet);
       }
       integratedCompThickness += xComp.thickness();
       ++componentCounter;

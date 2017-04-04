@@ -39,13 +39,14 @@ mergelayers = MergeLayers("MergeLayers",
                    # merge first 19 into new cell (id=0), next 71 into second cell (id=1), ...
                    merge = ecalNumberOfLayersToMerge,
                    OutputLevel = INFO)
-mergelayers.DataInputs.inhits.Path = "ECalHits"
-mergelayers.DataOutputs.outhits.Path = "mergedECalHits"
+mergelayers.inhits.Path = "ECalHits"
+mergelayers.outhits.Path = "mergedECalHits"
 
 #Configure tools for calo reconstruction
 from Configurables import CalibrateCaloHitsTool, NoiseCaloCellsFromFileTool, TubeLayerPhiEtaCaloTool
 calibcells = CalibrateCaloHitsTool("CalibrateCaloHitsTool", invSamplingFraction="5.4")
-noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool")
+noise = NoiseCaloCellsFromFileTool("NoiseCaloCellsFromFileTool",
+    noiseFileName="/eos/project/f/fccsw-web/testsamples/fcc_ecalCellNoise_mu1000_3radialLayers_v1.root")
 ecalgeo = TubeLayerPhiEtaCaloTool("EcalGeo",
                                   readoutName=ecalReadoutName,
                                   activeVolumeName = ecalVolumeName,
@@ -64,8 +65,8 @@ createcells = CreateCaloCells("CreateCaloCells",
                               addCellNoise=True, filterCellNoise=False,
                               noiseTool=noise,
                               OutputLevel=DEBUG)
-createcells.DataInputs.hits.Path="mergedECalHits"
-createcells.DataOutputs.cells.Path="caloCells"
+createcells.hits.Path="mergedECalHits"
+createcells.cells.Path="caloCells"
 
 #Create calo clusters
 from Configurables import CreateCaloClustersSlidingWindow, SingleCaloTowerTool
@@ -73,7 +74,7 @@ from GaudiKernel.PhysicalConstants import pi
 towers = SingleCaloTowerTool("towers",
                              deltaEtaTower = 0.01, deltaPhiTower = 2*pi/629.,
                              readoutName = ecalReadoutName)
-towers.DataInputs.cells.Path="caloCells"
+towers.cells.Path="caloCells"
 createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  towerTool = towers,
                                                  nEtaWindow = 5, nPhiWindow = 15,
@@ -82,7 +83,8 @@ createclusters = CreateCaloClustersSlidingWindow("CreateCaloClusters",
                                                  nEtaFinal = 5, nPhiFinal = 15,
                                                  energyThreshold = 10,
                                                  OutputLevel = DEBUG)
-createclusters.DataOutputs.clusters.Path="caloClusters"
+
+createclusters.clusters.Path="caloClusters"
 
 out = PodioOutput("out", filename="output_ecalReco_noiseFromFile_test.root",
                    OutputLevel=DEBUG)

@@ -4,8 +4,8 @@
 #include "DetInterface/IGeoSvc.h"
 
 // datamodel
-#include "datamodel/CaloHitCollection.h"
 #include "datamodel/CaloHit.h"
+#include "datamodel/CaloHitCollection.h"
 
 // DD4hep
 #include "DD4hep/LCDD.h"
@@ -15,17 +15,8 @@ DECLARE_TOOL_FACTORY(SingleCaloTowerTool)
 
 SingleCaloTowerTool::SingleCaloTowerTool(const std::string& type, const std::string& name, const IInterface* parent)
     : GaudiTool(type, name, parent) {
+  declareProperty("cells", m_cells, "Cells to create towers from (input)");
   declareInterface<ITowerTool>(this);
-  declareInput("cells", m_cells, "calo/cells");
-  declareProperty("readoutName", m_readoutName);
-  // the default value to calculate the position of clusters
-  declareProperty("radiusForPosition", m_radius = 1.);
-  declareProperty("etaMax", m_etaMax = 0.);
-  declareProperty("deltaEtaTower", m_deltaEtaTower = 0.01);
-  declareProperty("deltaPhiTower", m_deltaPhiTower = 0.01);
-  // needed for AlgTool wit output/input until it appears in Gaudi AlgTool constructor
-  declareProperty("DataInputs", inputDataObjects());
-  declareProperty("DataOutputs", outputDataObjects());
 }
 
 StatusCode SingleCaloTowerTool::initialize() {
@@ -50,8 +41,9 @@ StatusCode SingleCaloTowerTool::initialize() {
     error() << "There is no phi-eta segmentation." << endmsg;
     return StatusCode::FAILURE;
   }
-  if( ! m_etaMax) {
-    warning() << "Undefined detector size in eta. In each event the cell collection will be searched for maximum eta." << endmsg;
+  if (!m_etaMax) {
+    warning() << "Undefined detector size in eta. In each event the cell collection will be searched for maximum eta."
+              << endmsg;
   }
   return StatusCode::SUCCESS;
 }
@@ -62,7 +54,7 @@ tower SingleCaloTowerTool::towersNumber() {
   // number of phi bins
   m_nPhiTower = idPhi(2 * M_PI);
   // number of eta bins (if eta maximum is defined)
-  if( m_etaMax) {
+  if (m_etaMax) {
     m_nEtaTower = 2 * idEta(m_etaMax - m_deltaEtaTower / 2.) + 1;
   } else {
     m_nEtaTower = 0;
@@ -79,15 +71,14 @@ int SingleCaloTowerTool::etaTowersNumber() {
   float etaCell = 0;
   for (const auto& cell : *cells) {
     etaCell = fabs(m_segmentation->eta(cell.core().cellId));
-    if( etaCell > m_etaMax ) {
+    if (etaCell > m_etaMax) {
       m_etaMax = etaCell;
     }
   }
   // eta from cell collection is middle of cell
-  m_nEtaTower = 2 * m_etaMax / m_deltaEtaTower+ 1;
+  m_nEtaTower = 2 * m_etaMax / m_deltaEtaTower + 1;
   return m_nEtaTower;
 }
-
 
 uint SingleCaloTowerTool::buildTowers(std::vector<std::vector<float>>& aTowers) {
   // Get the input collection with cells from simulation + digitisation (after calibration and with noise)
@@ -129,19 +120,17 @@ float SingleCaloTowerTool::phi(int aIdPhi) const {
   return (aIdPhi - (m_nPhiTower - 1) / 2) * m_deltaPhiTower;
 }
 
-void SingleCaloTowerTool::matchCells(float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {
+void SingleCaloTowerTool::matchCells(
+    float eta, float phi, uint halfEtaFin, uint halfPhiFin, fcc::CaloCluster& aEdmCluster) {
   const fcc::CaloHitCollection* cells = m_cells.get();
   for (const auto& cell : *cells) {
     float etaCell = m_segmentation->eta(cell.core().cellId);
     float phiCell = m_segmentation->phi(cell.core().cellId);
-    if ((abs(idEta(etaCell) - idEta(eta)) <= halfEtaFin) &&
-        (abs(idPhi(phiCell) - idPhi(phi)) <= halfPhiFin)) {
-       aEdmCluster.addhits(cell);
+    if ((abs(idEta(etaCell) - idEta(eta)) <= halfEtaFin) && (abs(idPhi(phiCell) - idPhi(phi)) <= halfPhiFin)) {
+      aEdmCluster.addhits(cell);
     }
   }
   return;
 }
 
-float SingleCaloTowerTool::radiusForPosition() const {
-  return m_radius;
-}
+float SingleCaloTowerTool::radiusForPosition() const { return m_radius; }

@@ -12,7 +12,8 @@ podioevent = FCCDataSvc("EventDataSvc")
 # DD4hep geometry service
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc", detectors=[ 'file:Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'],
+                                          'file:Detector/DetFCChhHCalTile/compact/FCChh_HCalBarrel_TileCal.xml'
+                                        ],
                     OutputLevel = INFO)
 
 # Geant4 service
@@ -39,19 +40,18 @@ geantservice.G4commands += ["/run/setCut 0.1 mm"]
 # and a tool that saves the calorimeter hits
 from Configurables import SimG4Alg, SimG4SaveCalHits, InspectHitsCollectionsTool
 savehcaltool = SimG4SaveCalHits("saveHCalHits",readoutNames = ["BarHCal_Readout"])
-savehcaltool.DataOutputs.positionedCaloHits.Path = "HCalPositionedHits"
-savehcaltool.DataOutputs.caloHits.Path = "HCalHits"
+savehcaltool.positionedCaloHits.Path = "HCalPositionedHits"
+savehcaltool.caloHits.Path = "HCalHits"
 # Change INFO to DEBUG for printout of each deposit
-inspect = InspectHitsCollectionsTool("inspect", readoutNames = ["BarHCal_Readout"], OutputLevel = INFO)
 
 # next, create the G4 algorithm, giving the list of names of tools ("XX/YY")
 from Configurables import SimG4SingleParticleGeneratorTool
 pgun=SimG4SingleParticleGeneratorTool("SimG4SingleParticleGeneratorTool",saveEdm=True,
-                particleName="e-",energyMin=energy,energyMax=energy,etaMin=0.,etaMax=0.,
+                particleName="e-",energyMin=energy,energyMax=energy,etaMin=-0.36,etaMax=0.36,
                 OutputLevel =DEBUG)
 
 geantsim = SimG4Alg("SimG4Alg",
-                       outputs= ["SimG4SaveCalHits/saveHCalHits", "InspectHitsCollectionsTool/inspect"],
+                       outputs= ["SimG4SaveCalHits/saveHCalHits"],
                        eventProvider=pgun,
                        OutputLevel=DEBUG)
 
@@ -60,7 +60,7 @@ from Configurables import PodioOutput
 out = PodioOutput("out",
                    OutputLevel=DEBUG)
 out.outputCommands = ["keep *"]
-out.filename = "output_hcalSim_e"+str(int(energy/1000))+"GeV_eta0_10events.root"
+out.filename = "output_hcalSim_e"+str(int(energy/1000))+"GeV_eta036_10events.root"
 
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor

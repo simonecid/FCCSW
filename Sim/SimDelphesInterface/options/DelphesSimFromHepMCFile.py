@@ -24,8 +24,7 @@
 
 """
 To run Pythia together with Delphes
-> export PYTHIA8_XML=/afs/cern.ch/sw/lcg/releases/LCG_68/MCGenerators/pythia8/186/x86_64-slc6-gcc48-opt/xmldoc
-> ./run gaudirun.py PythiaDelphes_config.py
+> ./run gaudirun.py Sim/SimDelphesInterface/options/PythiaDelphes_config.py
 """
 import sys
 from Gaudi.Configuration import *
@@ -38,7 +37,7 @@ from Configurables import DelphesSaveNeutralParticles, DelphesSaveChargedParticl
 def apply_paths(obj, names):
   """ Applies the collection names to the Paths of DataOutputs """
   for attr, name in names.iteritems():
-    getattr(obj.DataOutputs, attr).Path = name
+    getattr(obj, attr).Path = name
 
 
 import argparse
@@ -156,7 +155,7 @@ if args.inputfile != '':
 reader = HepMCReader("Reader", 
     Filename=hepMCFile
 )
-reader.DataOutputs.hepmc.Path = "hepmc"
+reader.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
 from Configurables import DelphesSimulation
@@ -173,16 +172,16 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                         "DelphesSaveGenJets/genJets",
                                         "DelphesSaveJets/jets",
                                         "DelphesSaveMet/met"])
-delphessim.DataInputs.hepmc.Path                = "hepmc"
-delphessim.DataOutputs.genParticles.Path        = "skimmedGenParticles"
-delphessim.DataOutputs.mcEventWeights.Path      = "mcEventWeights"
+delphessim.hepmc.Path                = "hepmc"
+delphessim.genParticles.Path        = "skimmedGenParticles"
+delphessim.mcEventWeights.Path      = "mcEventWeights"
 
 ### Reads an HepMC::GenEvent from the data service and writes a collection of EDM Particles
 from Configurables import HepMCConverter
 hepmc_converter = HepMCConverter("Converter")
-hepmc_converter.DataInputs.hepmc.Path="hepmc"
-hepmc_converter.DataOutputs.genparticles.Path="genParticles"
-hepmc_converter.DataOutputs.genvertices.Path="genVertices"
+hepmc_converter.hepmc.Path="hepmc"
+hepmc_converter.genparticles.Path="genParticles"
+hepmc_converter.genvertices.Path="genVertices"
 
 ## FCC event-data model output -> define objects to be written out
 from Configurables import PodioOutput

@@ -49,3 +49,4 @@ cmake_install.cmake
 *.err
 *.log
 *.dat
+_*

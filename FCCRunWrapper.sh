@@ -2,7 +2,7 @@
 # Sandbox home directory, used to save output file
 SAVE_DEST="$(pwd)"
 
-nEvents=1
+nEvents=25000
 
 while getopts "j:c:p:i:" o; do
   case "${o}" in

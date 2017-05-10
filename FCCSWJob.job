@@ -1,5 +1,5 @@
 Universe = vanilla
-job = MinimumBiasGeneration_1000events
+job = MinimumBiasGeneration_25kevents
 cmd = FCCRunWrapper.sh
 args = -j $(job) -c $(cluster) -p $(process) -i Pythia_minbias_pp_100TeV.cmd
 # Better not to put logs in the same folder, as they are plenty
@@ -15,6 +15,6 @@ transfer_input_files	=	/software/sb17498/FCCSW/Generation/data/Pythia_minbias_pp
 
 request_cpus = 1
 request_memory = 300
-request_disk=100000
+request_disk=300000
 
-queue 3
+queue 20

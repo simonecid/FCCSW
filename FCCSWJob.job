@@ -1,7 +1,7 @@
 Universe = vanilla
-job = MinimumBiasGeneration_25kevents
+job = MinimumBiasGeneration_25kevents_13TeV_DelphesCMS
 cmd = FCCRunWrapper.sh
-args = -j $(job) -c $(cluster) -p $(process) -i Pythia_minbias_pp_100TeV.cmd
+args = -j $(job) -c $(cluster) -p $(process) -i Pythia_minbias_pp_13TeV.cmd
 # Better not to put logs in the same folder, as they are plenty
 output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
 error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err
@@ -9,12 +9,12 @@ log = /storage/sb17498/logs/$(job)_$(cluster).$(process).log
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
 # Needed in case file must be fed in input
-input	=	/software/sb17498/FCCSW/Generation/data/Pythia_minbias_pp_100TeV.cmd
-transfer_input_files	=	/software/sb17498/FCCSW/Generation/data/Pythia_minbias_pp_100TeV.cmd
+input	=	/software/sb17498/FCCSW/Generation/data/Pythia_minbias_pp_13TeV.cmd
+transfer_input_files	=	/software/sb17498/FCCSW/Generation/data/Pythia_minbias_pp_13TeV.cmd
 
 
 request_cpus = 1
-request_memory = 300
+request_memory = 500
 request_disk=300000
 
 queue 20

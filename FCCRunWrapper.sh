@@ -26,6 +26,10 @@ randomNumberSeed=$(((clusterId+processId)%900000000))
 printf "\nRandom:seed = ${randomNumberSeed}\n" >> ${SAVE_DEST}/${inputFile}
 cd /software/sb17498/FCCSW
 source init.sh
-./run fccrun.py /software/sb17498/FCCSW/Sim/SimDelphesInterface/options/PythiaDelphes_config.py --outputfile=${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root --inputfile=${SAVE_DEST}/${inputFile} --nevents=${nEvents}
+./run fccrun.py /software/sb17498/FCCSW/Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS.py --outputfile=${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root --inputfile=${SAVE_DEST}/${inputFile} --nevents=${nEvents}
 #echo ${randomNumberSeed}
-#echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
+echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
+
+set -o xtrace
+
+/usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/minBias_13TeV/

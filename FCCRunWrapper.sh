@@ -32,4 +32,4 @@ echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
 
 set -o xtrace
 
-/usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/minBias_13TeV/
+/usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/minBias_13TeV_DelphesCMS/

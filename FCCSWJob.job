@@ -1,5 +1,5 @@
 Universe = vanilla
-job = MinimumBiasGeneration_25kevents_13TeV_DelphesCMS
+job = MinimumBiasGeneration_25kevents_13TeV_DelphesFCC_CMSJets
 cmd = FCCRunWrapper.sh
 args = -j $(job) -c $(cluster) -p $(process) -i Pythia_minbias_pp_13TeV.cmd
 # Better not to put logs in the same folder, as they are plenty

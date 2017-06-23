@@ -1,7 +1,7 @@
 Universe = vanilla
 job = HardQCD_5kevents_100TeV_DelphesFCC_CMSJets
 cmd = FCCRunWrapper.sh
-args = -j $(job) -c $(cluster) -p $(process) -i Pythia_HardQCD.cmd -n 5000
+args = -j $(job) -c $(cluster) -p $(process) -n 5000
 # Better not to put logs in the same folder, as they are plenty
 output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
 error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err
@@ -9,12 +9,10 @@ log = /storage/sb17498/logs/$(job)_$(cluster).$(process).log
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
 # Needed in case file must be fed in input
-input = /software/sb17498/FCCSW/Generation/data/Pythia_HardQCD.cmd
-transfer_input_file = /software/sb17498/FCCSW/Generation/data/Pythia_HardQCD.cmd
 
 
 request_cpus = 1
 request_memory = 500
 request_disk=300000
 
-queue 10
+queue 100

@@ -5,7 +5,8 @@ SAVE_DEST="$(pwd)"
 nEvents=5000
 
 # Destination in /HDFS/FCC-hh
-HDFS_DEST="HardQCD_PtBinned_300_500_GeV"
+HDFS_DEST="HardQCD_PtBinned_30_300_GeV"
+inputFile="Generation/data/Pythia_HardQCD_30_300.cmd"
 
 while getopts "j:c:p:i:n:" o; do
   case "${o}" in

@@ -2,9 +2,12 @@
 # Sandbox home directory, used to save output file
 SAVE_DEST="$(pwd)"
 
-nEvents=25000
+nEvents=5000
 
-while getopts "j:c:p:i:" o; do
+# Destination in /HDFS/FCC-hh
+HDFS_DEST="HardQCD_PtBinned_10_30_GeV"
+
+while getopts "j:c:p:i:n:" o; do
   case "${o}" in
     j)
       jobName=${OPTARG}
@@ -17,6 +20,9 @@ while getopts "j:c:p:i:" o; do
       ;;
     i)
       inputFile=${OPTARG}
+      ;;
+    n) 
+      nEvents=${OPTARG}
       ;;
     esac
 done
@@ -32,4 +38,5 @@ echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
 
 set -o xtrace
 
-/usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/minBias_13TeV_DelphesFCC_CMSJets/
+/usr/bin/hdfs dfs -mkdir -p /FCC-hh/${HDFS_DEST}
+/usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/${HDFS_DEST}

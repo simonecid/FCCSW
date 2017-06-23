@@ -25,5 +25,5 @@ Beams:idB = 2212                   ! second beam, p = 2212, pbar = -2212
 Beams:eCM = 100000.  ! CM energy of collision
 
 HardQCD:all = on
-PhaseSpace:pTHatMin = 30
-PhaseSpace:pTHatMax = 300
+PhaseSpace:pTHatMin = 300
+PhaseSpace:pTHatMax = 500

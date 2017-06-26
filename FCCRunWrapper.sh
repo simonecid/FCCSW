@@ -5,8 +5,9 @@ SAVE_DEST="$(pwd)"
 nEvents=5000
 
 # Destination in /HDFS/FCC-hh
-HDFS_DEST="HardQCD_PtBinned_30_300_GeV"
-inputFile="Generation/data/Pythia_HardQCD_30_300.cmd"
+HDFS_DEST="HardQCD_PtBinned_300_500_GeV"
+inputFile="Pythia_HardQCD_300_500.cmd"
+software="/software/sb17498/FCCSW/Generation/data"
 
 while getopts "j:c:p:i:n:" o; do
   case "${o}" in
@@ -27,6 +28,8 @@ while getopts "j:c:p:i:n:" o; do
       ;;
     esac
 done
+
+cp ${software}/${inputFile} ${SAVE_DEST}/${inputFile}
 
 randomNumberSeed=$(((clusterId+processId)%900000000))
 # Ugly workaround to setup seed

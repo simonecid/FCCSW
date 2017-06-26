@@ -1,5 +1,5 @@
 Universe = vanilla
-job = HardQCD_5kevents_100TeV_DelphesFCC_CMSJets
+job = HardQCD_PtBinned_300_500_GeV_5kevents_100TeV_DelphesFCC_CMSJets
 cmd = FCCRunWrapper.sh
 args = -j $(job) -c $(cluster) -p $(process) -n 5000
 # Better not to put logs in the same folder, as they are plenty
@@ -7,7 +7,7 @@ output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
 error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err
 log = /storage/sb17498/logs/$(job)_$(cluster).$(process).log
 should_transfer_files = YES
-when_to_transfer_output = ON_EXIT_OR_EVICT
+when_to_transfer_output = ON_EXIT
 # Needed in case file must be fed in input
 
 

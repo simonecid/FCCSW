@@ -1,5 +1,5 @@
 Universe = vanilla
-job = HardQCD_PtBinned_300_500_GeV_5kevents_100TeV_DelphesFCC_CMSJets
+job = HardQCD_PtBinned_500_700_GeV_5kevents_100TeV_DelphesFCC_CMSJets
 cmd = FCCRunWrapper.sh
 args = -j $(job) -c $(cluster) -p $(process) -n 5000
 # Better not to put logs in the same folder, as they are plenty

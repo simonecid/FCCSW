@@ -35,17 +35,22 @@ while getopts "j:c:p:i:n:s:d:" o; do
     esac
 done
 
+# We have to setup the seed, therefore we create an individual copy of the pythia cmd and we will append its seed to it
 cp ${software}Generation/data/${inputFile} ${SAVE_DEST}/${inputFile}
-
 randomNumberSeed=$(((clusterId+processId)%900000000))
-# Ugly workaround to setup seed
 printf "\nRandom:seed = ${randomNumberSeed}\n" >> ${SAVE_DEST}/${inputFile}
+printf "\nRandom:seed = ${randomNumberSeed}\n"
+
+# Running the sim
 cd /software/sb17498/FCCSW
 source init.sh
 set -o xtrace
 ./run fccrun.py ${software}${config} --outputfile=${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root --inputfile=${SAVE_DEST}/${inputFile} --nevents=${nEvents}
-#echo ${randomNumberSeed}
 echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
 
+# Copying output
 /usr/bin/hdfs dfs -mkdir -p /FCC-hh/${HDFS_DEST}
 /usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/${HDFS_DEST}
+
+# Removing cmd to avoid a copy in the submission folder
+rm ${SAVE_DEST}/${inputFile}

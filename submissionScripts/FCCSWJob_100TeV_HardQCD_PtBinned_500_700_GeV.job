@@ -1,7 +1,7 @@
 Universe = vanilla
 job = HardQCD_PtBinned_500_700_GeV_5kevents_100TeV_DelphesFCC_CMSJets
-cmd = FCCRunWrapper.sh
-args = -j $(job) -c $(cluster) -p $(process) -n 5000 -i Pythia_HardQCD_500_700.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_FCC_CMSJets.py -d HardQCD_PtBinned_500_700_GeV
+cmd = submissionScripts/FCCRunWrapper.sh
+args = -j $(job) -c $(cluster) -p $(process) -n 5000 -i Pythia_HardQCD_100TeV_500_700.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_FCC_CMSJets.py -d HardQCD_100TeV_PtBinned_500_700_GeV_DelphesFCC_CMSJets
 # Better not to put logs in the same folder, as they are plenty
 output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
 error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err

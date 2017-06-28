@@ -1,7 +1,7 @@
 Universe = vanilla
-job = MinimumBiasGeneration_25kevents_13TeV_DelphesFCC_CMSJets
-cmd = FCCRunWrapper_MinBias.sh
-args = -j $(job) -c $(cluster) -p $(process) -n 25000 -i Pythia_minbias_pp_13TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS.py -d minBias_13TeV_DelphesFCC_CMSJets
+job = MinimumBiasGeneration_25kevents_13TeV_DelphesCMS
+cmd = submissionScripts/FCCRunWrapper.sh
+args = -j $(job) -c $(cluster) -p $(process) -n 25000 -i Pythia_minbias_pp_13TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS.py -d minBias_13TeV_DelphesCMS
 # Better not to put logs in the same folder, as they are plenty
 output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
 error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err

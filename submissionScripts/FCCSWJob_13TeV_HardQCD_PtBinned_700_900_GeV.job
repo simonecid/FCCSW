@@ -1,0 +1,18 @@
+Universe = vanilla
+job = HardQCD_PtBinned_700_900_GeV_5kevents_13TeV_DelphesCMS_CMSJets
+cmd = FCCRunWrapper.sh
+args = -j $(job) -c $(cluster) -p $(process) -n 5000 -i Pythia_HardQCD_13TeV_700_900.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_FCC_CMSJets.py -d HardQCD_13TeV_PtBinned_700_900_GeV
+# Better not to put logs in the same folder, as they are plenty
+output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
+error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err
+log = /storage/sb17498/logs/$(job)_$(cluster).$(process).log
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+# Needed in case file must be fed in input
+
+
+request_cpus = 1
+request_memory = 500
+request_disk=300000
+
+queue 10

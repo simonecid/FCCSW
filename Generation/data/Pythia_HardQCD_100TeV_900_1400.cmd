@@ -26,4 +26,4 @@ Beams:eCM = 100000.  ! CM energy of collision
 
 HardQCD:all = on
 PhaseSpace:pTHatMin = 900
-PhaseSpace:pTHatMax = 1000
+PhaseSpace:pTHatMax = 1400

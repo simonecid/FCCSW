@@ -65,9 +65,7 @@ messageLevelDelphes=INFO
 messageLevelOut    =INFO
 
 ## Define either pythia configuration file to generate events
-pythiaConfFile="Generation/data/Pythia_ttbar.cmd"
-if args.inputfile != '':
-    pythiaConfFile = args.inputfile
+pythiaConfFile="Generation/data/Pythia_minbias_pp_13TeV.cmd"
 
 ## or pythia configuration file to read in LHE file & generate events
 #pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
@@ -188,8 +186,8 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                         "DelphesSaveNeutralParticles/pfneutrals",
                                         "DelphesSaveGenJets/genJets",
                                         "DelphesSaveJets/jets",
-                                        "DelphesSaveJets/fatjets",                                        
-					"DelphesSaveMet/met"])
+                                        "DelphesSaveJets/fatjets",
+                                        "DelphesSaveMet/met"])
 delphessim.hepmc.Path                = "hepmc"
 delphessim.genParticles.Path        = "skimmedGenParticles"
 delphessim.mcEventWeights.Path      = "mcEventWeights"

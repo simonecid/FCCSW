@@ -6,7 +6,7 @@ nEvents=5000
 
 # Destination in /HDFS/FCC-hh
 inputFile="Pythia_HardQCD_700_900.cmd"
-software="/software/sb17498/FCCSW/"
+software="/software/sb17498/FCCSW"
 config="Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS.py"
 
 while getopts "j:c:p:i:n:s:d:" o; do
@@ -35,17 +35,20 @@ while getopts "j:c:p:i:n:s:d:" o; do
     esac
 done
 
+set -o xtrace
+
 # We have to setup the seed, therefore we create an individual copy of the pythia cmd and we will append its seed to it
-cp ${software}Generation/data/${inputFile} ${SAVE_DEST}/${inputFile}
+cp ${software}/Generation/data/${inputFile} ${SAVE_DEST}/${inputFile}
 randomNumberSeed=$(((clusterId+processId)%900000000))
 printf "\nRandom:seed = ${randomNumberSeed}\n" >> ${SAVE_DEST}/${inputFile}
 printf "\nRandom:seed = ${randomNumberSeed}\n"
 
 # Running the sim
+set +o xtrace
 cd /software/sb17498/FCCSW
 source init.sh
 set -o xtrace
-./run fccrun.py ${software}${config} --outputfile=${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root --inputfile=${SAVE_DEST}/${inputFile} --nevents=${nEvents}
+./run fccrun.py ${software}/${config} --outputfile=${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root --inputfile=${SAVE_DEST}/${inputFile} --nevents=${nEvents}
 echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
 
 # Copying output
@@ -54,3 +57,4 @@ echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
 
 # Removing cmd to avoid a copy in the submission folder
 rm ${SAVE_DEST}/${inputFile}
+set +o xtrace

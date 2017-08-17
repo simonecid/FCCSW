@@ -64,8 +64,9 @@ messageLevelPythia =INFO
 messageLevelDelphes=INFO
 messageLevelOut    =INFO
 
-## Define either pythia configuration file to generate events
-pythiaConfFile="Generation/data/Pythia_minbias_pp_13TeV.cmd"
+pythiaConfFile="Generation/data/Pythia_ttbar.cmd"
+if args.inputfile != '':
+    pythiaConfFile = args.inputfile
 
 ## or pythia configuration file to read in LHE file & generate events
 #pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"

@@ -1,0 +1,18 @@
+Universe = vanilla
+job = NeutrinoGun_PU140_MuonOnly_100events_13TeV_DelphesCMS
+cmd = submissionScripts/FCCRunWrapper.sh
+args = -j $(job) -c $(cluster) -p $(process) -n 100 -i Pythia_minbias_pp_13TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS_onlyMuons.py -d NeutrinoGun_OnlyMuons_13TeV_DelphesCMS
+# Better not to put logs in the same folder, as they are plenty
+output = /storage/sb17498/logs/$(job)_$(cluster).$(process).out
+error = /storage/sb17498/logs/$(job)_$(cluster).$(process).err
+log = /storage/sb17498/logs/$(job)_$(cluster).$(process).log
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+# Needed in case file must be fed in input
+
+
+request_cpus = 1
+request_memory = 1000
+request_disk = 300000
+
+queue 500

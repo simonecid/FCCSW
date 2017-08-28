@@ -103,19 +103,20 @@ out_names = {
     "genJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
     # Jets output tool
     "jets": {"jets": "jets", "jetConstituents": "jetParts", "jetsFlavorTagged": "jetsFlavor",
-    #"jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"},
+    #"jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"
+    },
     # FatJets output tool
-    #"fatjets": {"jets": "fatjets", "jetConstituents": "fatjetParts", 
-    #            "jetsOneSubJettinessTagged": "jetsOneSubJettiness", 
-    #            "jetsTwoSubJettinessTagged": "jetsTwoSubJettiness", 
-    #            "jetsThreeSubJettinessTagged": "jetsThreeSubJettiness",
-    #            "subjetsTrimmingTagged": "subjetsTrimmingTagged", "subjetsTrimming": "subjetsTrimming", 
-    #            "subjetsPruningTagged": "subjetsPruningTagged", "subjetsPruning": "subjetsPruning", 
-    #            "subjetsSoftDropTagged": "subjetsSoftDropTagged", "subjetsSoftDrop": "subjetsSoftDrop", 
-    #            },
+    "fatjets": {"jets": "fatjets", "jetConstituents": "fatjetParts", 
+                "jetsOneSubJettinessTagged": "jetsOneSubJettiness", 
+                "jetsTwoSubJettinessTagged": "jetsTwoSubJettiness", 
+                "jetsThreeSubJettinessTagged": "jetsThreeSubJettiness",
+                "subjetsTrimmingTagged": "subjetsTrimmingTagged", "subjetsTrimming": "subjetsTrimming", 
+                "subjetsPruningTagged": "subjetsPruningTagged", "subjetsPruning": "subjetsPruning", 
+                "subjetsSoftDropTagged": "subjetsSoftDropTagged", "subjetsSoftDrop": "subjetsSoftDrop", 
+                },
     # Missing transverse energy output tool
     "met": {"missingEt": "met"}
-    }
+}
 
 ## Data event model based on Podio
 podioEvent=FCCDataSvc("EventDataSvc")
@@ -130,32 +131,32 @@ podioEvent=FCCDataSvc("EventDataSvc")
 muonSaveTool = DelphesSaveChargedParticles("muons", delphesArrayName="MuonMomentumSmearing/muons")
 apply_paths(muonSaveTool, out_names["muons"])
 
-#eleSaveTool = DelphesSaveChargedParticles("electrons", delphesArrayName="ElectronFilter/electrons")
-#apply_paths(eleSaveTool, out_names["electrons"])
+eleSaveTool = DelphesSaveChargedParticles("electrons", delphesArrayName="ElectronFilter/electrons")
+apply_paths(eleSaveTool, out_names["electrons"])
 #
-#chhadSaveTool = DelphesSaveChargedParticles("pfcharged", delphesArrayName="ChargedHadronFilter/chargedHadrons", saveIsolation=False)
-#apply_paths(chhadSaveTool, out_names["pfcharged"])
+chhadSaveTool = DelphesSaveChargedParticles("pfcharged", delphesArrayName="ChargedHadronFilter/chargedHadrons", saveIsolation=False)
+apply_paths(chhadSaveTool, out_names["pfcharged"])
 #
-#neuthadSaveTool = DelphesSaveNeutralParticles("pfneutrals", delphesArrayName="HCal/eflowNeutralHadrons", saveIsolation=False)
-#apply_paths(neuthadSaveTool, out_names["pfneutrals"])
+neuthadSaveTool = DelphesSaveNeutralParticles("pfneutrals", delphesArrayName="HCal/eflowNeutralHadrons", saveIsolation=False)
+apply_paths(neuthadSaveTool, out_names["pfneutrals"])
 #
-#pfphotonsSaveTool = DelphesSaveNeutralParticles("pfphotons", delphesArrayName="ECal/eflowPhotons", saveIsolation=False)
-#apply_paths(pfphotonsSaveTool, out_names["pfphotons"])
+pfphotonsSaveTool = DelphesSaveNeutralParticles("pfphotons", delphesArrayName="ECal/eflowPhotons", saveIsolation=False)
+apply_paths(pfphotonsSaveTool, out_names["pfphotons"])
 #
-#photonsSaveTool = DelphesSaveNeutralParticles("photons", delphesArrayName="PhotonEfficiency/photons")
-#apply_paths(photonsSaveTool, out_names["photons"])
+photonsSaveTool = DelphesSaveNeutralParticles("photons", delphesArrayName="PhotonEfficiency/photons")
+apply_paths(photonsSaveTool, out_names["photons"])
 #
-#genJetSaveTool = DelphesSaveGenJets("genJets", delphesArrayName="GenJetFinder/jets")
-#apply_paths(genJetSaveTool, out_names["genJets"])
+genJetSaveTool = DelphesSaveGenJets("genJets", delphesArrayName="GenJetFinder/jets")
+apply_paths(genJetSaveTool, out_names["genJets"])
 #
-#jetSaveTool = DelphesSaveJets("jets", delphesArrayName="JetEnergyScale/jets")
-#apply_paths(jetSaveTool, out_names["jets"])
+jetSaveTool = DelphesSaveJets("jets", delphesArrayName="JetEnergyScale/jets")
+apply_paths(jetSaveTool, out_names["jets"])
 #
-#fatjetSaveTool = DelphesSaveJets("fatjets", delphesArrayName="FatJetFinder/jets", saveSubstructure=True)
-#apply_paths(fatjetSaveTool, out_names["fatjets"])
+fatjetSaveTool = DelphesSaveJets("fatjets", delphesArrayName="FatJetFinder/jets", saveSubstructure=True)
+apply_paths(fatjetSaveTool, out_names["fatjets"])
 #
-#metSaveTool = DelphesSaveMet("met", delphesMETArrayName="MissingET/momentum", delphesSHTArrayName="ScalarHT/energy")
-#apply_paths(metSaveTool, out_names["met"])
+metSaveTool = DelphesSaveMet("met", delphesMETArrayName="MissingET/momentum", delphesSHTArrayName="ScalarHT/energy")
+apply_paths(metSaveTool, out_names["met"])
 
 ## Pythia generator
 from Configurables import PythiaInterface

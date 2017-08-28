@@ -43,6 +43,8 @@ randomNumberSeed=$(((clusterId+processId)%900000000))
 printf "\nRandom:seed = ${randomNumberSeed}\n" >> ${SAVE_DEST}/${inputFile}
 printf "\nRandom:seed = ${randomNumberSeed}\n"
 
+echo "I am running on" $HOSTNAME
+
 # Running the sim
 set +o xtrace
 cd /software/sb17498/FCCSW

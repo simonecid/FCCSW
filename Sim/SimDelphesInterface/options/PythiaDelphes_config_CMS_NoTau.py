@@ -106,14 +106,14 @@ out_names = {
     #"jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"
     },
     # FatJets output tool
-    "fatjets": {"jets": "fatjets", "jetConstituents": "fatjetParts", 
-                "jetsOneSubJettinessTagged": "jetsOneSubJettiness", 
-                "jetsTwoSubJettinessTagged": "jetsTwoSubJettiness", 
-                "jetsThreeSubJettinessTagged": "jetsThreeSubJettiness",
-                "subjetsTrimmingTagged": "subjetsTrimmingTagged", "subjetsTrimming": "subjetsTrimming", 
-                "subjetsPruningTagged": "subjetsPruningTagged", "subjetsPruning": "subjetsPruning", 
-                "subjetsSoftDropTagged": "subjetsSoftDropTagged", "subjetsSoftDrop": "subjetsSoftDrop", 
-                },
+    #"fatjets": {"jets": "fatjets", "jetConstituents": "fatjetParts", 
+    #            "jetsOneSubJettinessTagged": "jetsOneSubJettiness", 
+    #            "jetsTwoSubJettinessTagged": "jetsTwoSubJettiness", 
+    #            "jetsThreeSubJettinessTagged": "jetsThreeSubJettiness",
+    #            "subjetsTrimmingTagged": "subjetsTrimmingTagged", "subjetsTrimming": "subjetsTrimming", 
+    #            "subjetsPruningTagged": "subjetsPruningTagged", "subjetsPruning": "subjetsPruning", 
+    #            "subjetsSoftDropTagged": "subjetsSoftDropTagged", "subjetsSoftDrop": "subjetsSoftDrop", 
+    #            },
     # Missing transverse energy output tool
     "met": {"missingEt": "met"}
 }
@@ -152,8 +152,8 @@ apply_paths(genJetSaveTool, out_names["genJets"])
 jetSaveTool = DelphesSaveJets("jets", delphesArrayName="JetEnergyScale/jets")
 apply_paths(jetSaveTool, out_names["jets"])
 #
-fatjetSaveTool = DelphesSaveJets("fatjets", delphesArrayName="FatJetFinder/jets", saveSubstructure=True)
-apply_paths(fatjetSaveTool, out_names["fatjets"])
+#fatjetSaveTool = DelphesSaveJets("fatjets", delphesArrayName="FatJetFinder/jets", saveSubstructure=True)
+#apply_paths(fatjetSaveTool, out_names["fatjets"])
 #
 metSaveTool = DelphesSaveMet("met", delphesMETArrayName="MissingET/momentum", delphesSHTArrayName="ScalarHT/energy")
 apply_paths(metSaveTool, out_names["met"])
@@ -183,15 +183,15 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                ApplyGenFilter=True,
                                OutputLevel=messageLevelDelphes,
                                outputs=["DelphesSaveChargedParticles/muons",
-                                        #"DelphesSaveChargedParticles/electrons",
-                                        #"DelphesSaveNeutralParticles/photons",
-                                        #"DelphesSaveChargedParticles/pfcharged",
-                                        #"DelphesSaveNeutralParticles/pfphotons",
-                                        #"DelphesSaveNeutralParticles/pfneutrals",
-                                        #"DelphesSaveGenJets/genJets",
-                                        #"DelphesSaveJets/jets",
+                                        "DelphesSaveChargedParticles/electrons",
+                                        "DelphesSaveNeutralParticles/photons",
+                                        "DelphesSaveChargedParticles/pfcharged",
+                                        "DelphesSaveNeutralParticles/pfphotons",
+                                        "DelphesSaveNeutralParticles/pfneutrals",
+                                        "DelphesSaveGenJets/genJets",
+                                        "DelphesSaveJets/jets",
                                         #"DelphesSaveJets/fatjets",                                        
-                                        #"DelphesSaveMet/met"
+                                        "DelphesSaveMet/met"
                                        ])
 delphessim.hepmc.Path                = "hepmc"
 delphessim.genParticles.Path        = "skimmedGenParticles"

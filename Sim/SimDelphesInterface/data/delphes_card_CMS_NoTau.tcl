@@ -47,6 +47,9 @@ set ExecutionPath {
 
   JetFlavorAssociation
 
+  BTagging
+  TauTagging
+
   UniqueObjectFinder
 
   ScalarHT
@@ -730,6 +733,29 @@ module BTagging BTagging {
 
   # efficiency formula for b-jets
   add EfficiencyFormula {5} {0.85*tanh(0.0025*pt)*(25.0/(1+0.063*pt))}
+}
+
+#############
+# tau-tagging
+#############
+
+module TauTagging TauTagging {
+  set ParticleInputArray Delphes/allParticles
+  set PartonInputArray Delphes/partons
+  set JetInputArray JetEnergyScale/jets
+
+  set DeltaR 0.5
+
+  set TauPTMin 1.0
+
+  set TauEtaMax 2.5
+
+  # add EfficiencyFormula {abs(PDG code)} {efficiency formula as a function of eta and pt}
+
+  # default efficiency formula (misidentification rate)
+  add EfficiencyFormula {0} {0}
+  # efficiency formula for tau-jets
+  add EfficiencyFormula {15} {0}
 }
 
 #####################################################

@@ -103,7 +103,7 @@ out_names = {
     "genJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
     # Jets output tool
     "jets": {"jets": "jets", "jetConstituents": "jetParts", "jetsFlavorTagged": "jetsFlavor",
-    #"jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"
+    "jetsBTagged": "bTags", "jetsCTagged": "cTags", "jetsTauTagged": "tauTags"
     },
     # FatJets output tool
     #"fatjets": {"jets": "fatjets", "jetConstituents": "fatjetParts", 

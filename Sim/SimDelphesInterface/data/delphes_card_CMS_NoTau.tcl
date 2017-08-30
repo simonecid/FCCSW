@@ -48,7 +48,6 @@ set ExecutionPath {
   JetFlavorAssociation
 
   BTagging
-  TauTagging
 
   UniqueObjectFinder
 

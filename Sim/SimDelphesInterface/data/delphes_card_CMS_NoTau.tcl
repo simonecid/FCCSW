@@ -611,7 +611,7 @@ module FastJetFinder GenJetFinder {
   set JetAlgorithm 6
   set ParameterR 0.5
 
-  set JetPTMin 20.0
+  set JetPTMin 5.0
 }
 
 #########################

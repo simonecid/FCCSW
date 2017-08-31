@@ -1,7 +1,7 @@
 Universe = vanilla
-job = NeutrinoGun_PU140_NoTau_100events_13TeV_DelphesCMS
+job = NeutrinoGun_PU140_NoTau_100events_13TeV_DelphesCMS_JetPTMin_5
 cmd = submissionScripts/FCCRunWrapper.sh
-args = -j $(job) -c $(cluster) -p $(process) -n 100 -i Pythia_minbias_pp_13TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS_NoTau.py -d NeutrinoGun_NoTau_13TeV_DelphesCMS_Run3
+args = -j $(job) -c $(cluster) -p $(process) -n 100 -i Pythia_minbias_pp_13TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS_NoTau.py -d NeutrinoGun_NoTau_13TeV_DelphesCMS_JetPTMin_5
 # Better not to put logs in the same folder, as they are plenty
 output = /storage/sb17498/logs/FCCSW/$(job)_$(cluster).$(process).out
 error = /storage/sb17498/logs/FCCSW/$(job)_$(cluster).$(process).err
@@ -15,4 +15,4 @@ request_cpus = 1
 request_memory = 1000
 request_disk = 300000
 
-queue 1000
+queue 5000

@@ -92,7 +92,9 @@ out_names = {
     # Photons output tool
     "photons": {"particles": "genPhotons", "mcAssociations": "photonsToMC", "isolationTags": "photonITags"},
     # GenJets output tool
-    "genJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
+    "nonPropagatedGenJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
+
+    "propagatedGenJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
     # Missing transverse energy output tool
     "met": {"missingEt": "genMET"}
     }
@@ -116,8 +118,11 @@ apply_paths(eleSaveTool, out_names["electrons"])
 photonsSaveTool = DelphesSaveNeutralParticles("genPhotons", delphesArrayName="GenPhotonFilter/photons")
 apply_paths(photonsSaveTool, out_names["photons"])
 
-genJetSaveTool = DelphesSaveGenJets("genJets", delphesArrayName="GenJetFinder/jets")
-apply_paths(genJetSaveTool, out_names["genJets"])
+nonPropagatedGenJetSaveTool = DelphesSaveGenJets("nonPropagatedGenJets", delphesArrayName="NonPropagatedGenJetFinder/jets")
+apply_paths(nonPropagatedGenJetSaveTool, out_names["nonPropagatedGenJets"])
+
+propagatedGenJetSaveTool = DelphesSaveGenJets("propagatedGenJets", delphesArrayName="PropagatedGenJetFinder/jets")
+apply_paths(propagatedGenJetSaveTool, out_names["propagatedGenJets"])
 
 metSaveTool = DelphesSaveMet("genMET", delphesMETArrayName="GenMissingET/momentum", delphesSHTArrayName="GenScalarHT/energy")
 apply_paths(metSaveTool, out_names["met"])
@@ -145,7 +150,8 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                outputs=["DelphesSaveChargedParticles/genMuons",
                                         "DelphesSaveChargedParticles/genElectrons",
                                         "DelphesSaveNeutralParticles/genPhotons",
-                                        "DelphesSaveGenJets/genJets",
+                                        "DelphesSaveGenJets/nonPropagatedGenJets",
+                                        "DelphesSaveGenJets/propagatedGenJets",
                                         "DelphesSaveMet/genMET"])
 delphessim.hepmc.Path                = "hepmc"
 delphessim.genParticles.Path        = "skimmedGenParticles"

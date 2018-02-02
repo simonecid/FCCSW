@@ -17,7 +17,12 @@ set ExecutionPath {
   SetPositionEtaPhiToMomentum
   PropagatedNeutrinoFilter
   PropagatedGenJetFinder
-    
+
+}
+
+module SetPositionEtaPhiToMomentum SetPositionEtaPhiToMomentum {
+  set InputArray PropagateToECAL/stableParticles
+  set OutputArray stableParticles
 }
 
 #########################################
@@ -142,7 +147,7 @@ module Merger GenScalarHT {
 
 module PdgCodeFilter PropagatedNeutrinoFilter {
 
-  set InputArray PropagateToECAL/stableParticles
+  set InputArray SetPositionEtaPhiToMomentum/stableParticles
   set OutputArray filteredParticles
 
   set PTMin 0.0
@@ -161,7 +166,7 @@ module PdgCodeFilter PropagatedNeutrinoFilter {
 #####################
 
 module FastJetFinder PropagatedGenJetFinder {
-  set InputArray PropagatedNeutrinoFilter/filteredParticles
+  set InputArray SetPositionEtaPhiToMomentum/filteredParticles
 
   set OutputArray jets
 

@@ -134,7 +134,7 @@ from Configurables import HepMCFullMerge
 
 pythia8gentool = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 mergetool = HepMCFullMerge()
-pileuptool = PoissonPileUp(numPileUpEvents=0)
+pileuptool = PoissonPileUp(numPileUpEvents=140)
 ## Write the HepMC::GenEvent to the data service
 from Configurables import GenAlg
 pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pythia8gentool, PileUpTool=pileuptool, HepMCMergeTool=mergetool)

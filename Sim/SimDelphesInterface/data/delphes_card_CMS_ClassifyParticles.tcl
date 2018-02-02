@@ -4,7 +4,6 @@
 
 set ExecutionPath {
 
-  PropagateToECAL
 
   GenElectronFilter
   GenMuonFilter
@@ -13,6 +12,9 @@ set ExecutionPath {
   NonPropagatedGenJetFinder
   GenMissingET
   GenScalarHT
+
+  PropagateToECAL
+  SetPositionEtaPhiToMomentum
   PropagatedNeutrinoFilter
   PropagatedGenJetFinder
     

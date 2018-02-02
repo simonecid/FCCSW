@@ -92,9 +92,9 @@ out_names = {
     # Photons output tool
     "photons": {"particles": "genPhotons", "mcAssociations": "photonsToMC", "isolationTags": "photonITags"},
     # GenJets output tool
-    "nonPropagatedGenJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
+    "nonPropagatedGenJets": {"genJets": "nonPropagatedGenJets", "genJetsFlavorTagged": "nonPropagatedGenJetsFlavor"},
 
-    "propagatedGenJets": {"genJets": "genJets", "genJetsFlavorTagged": "genJetsFlavor"},
+    "propagatedGenJets": {"genJets": "propagatedGenJets", "genJetsFlavorTagged": "propagatedGenJetsFlavor"},
     # Missing transverse energy output tool
     "met": {"missingEt": "genMET"}
     }

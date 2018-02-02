@@ -73,7 +73,7 @@ if args.inputfile != '':
 #pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
-delphesCard="Sim/SimDelphesInterface/data/delphes_card_CMS_ClassifyParticles.tcl"
+delphesCard="Sim/SimDelphesInterface/data/delphes_card_CMS_ClassifyParticles_PropagatedGenJets.tcl"
 if delphes_args.delphescard != None:
     delphesCard = delphes_args.delphescard
 

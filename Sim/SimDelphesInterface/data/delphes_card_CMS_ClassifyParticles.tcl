@@ -166,7 +166,7 @@ module PdgCodeFilter PropagatedNeutrinoFilter {
 #####################
 
 module FastJetFinder PropagatedGenJetFinder {
-  set InputArray SetPositionEtaPhiToMomentum/filteredParticles
+  set InputArray PropagatedNeutrinoFilter/filteredParticles
 
   set OutputArray jets
 

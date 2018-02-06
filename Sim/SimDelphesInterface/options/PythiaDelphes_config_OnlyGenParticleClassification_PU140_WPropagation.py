@@ -131,14 +131,23 @@ apply_paths(metSaveTool, out_names["met"])
 from Configurables import PythiaInterface
 from Configurables import PoissonPileUp
 from Configurables import HepMCFullMerge
+from Configurables import GaussSmearVertex
+from FCCPileupScenarios import FCCPhase1PileupConf as pileupconf
+
+smeartool = GaussSmearVertex(
+    xVertexSigma=pileupconf['xVertexSigma'],
+    yVertexSigma=pileupconf['yVertexSigma'],
+    zVertexSigma=pileupconf['zVertexSigma'],
+    tVertexSigma=pileupconf['tVertexSigma'],
+)
 
 pythia8gentool = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 mergetool = HepMCFullMerge()
 pileuptool = PoissonPileUp(numPileUpEvents=140)
+VertexSmearingTool=smeartool
 ## Write the HepMC::GenEvent to the data service
 from Configurables import GenAlg
-pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pythia8gentool, PileUpTool=pileuptool, HepMCMergeTool=mergetool)
-#pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pythia8gentool, PileUpTool=pileuptool, HepMCMergeTool=mergetool, VertexSmearingTool=smeartool)
 pythia8gen.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out

@@ -1,0 +1,18 @@
+Universe = vanilla
+job = MinimumBias_14TeV_OnlyGenParticleClassification_JetPTMin_3_CMSSWtune_PropagatedJets
+cmd = submissionScripts/FCCRunWrapper.sh
+args = -j $(job) -c $(cluster) -p $(process) -n 20000 -i Pythia_minbias_pp_14TeV_CMSSWtuning.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_OnlyGenParticleClassification_MinBias_WPropagation.py -d MinimumBias_14TeV_OnlyGenParticleClassification_JetPTMin_3_CMSSWtune_WPropagation
+# Better not to put logs in the same folder, as they are plenty
+output = /storage/sb17498/logs/FCCSW/$(job)_$(cluster).$(process).out
+error = /storage/sb17498/logs/FCCSW/$(job)_$(cluster).$(process).err
+log = /storage/sb17498/logs/FCCSW/$(job)_$(cluster).$(process).log
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+# Needed in case file must be fed in input
+
+
+request_cpus = 1
+request_memory = 1000
+request_disk = 300000
+
+queue 50

@@ -73,7 +73,7 @@ if args.inputfile != '':
 #pythiaConfFile="Generation/data/Pythia_LHEinput.cmd"
 
 ## Define Delphes card
-delphesCard="Sim/SimDelphesInterface/data/delphes_card_CMS_ClassifyParticles_PropagatedGenJets.tcl"
+delphesCard="Sim/SimDelphesInterface/data/delphes_card_CMS_ClassifyParticles_PropagatedGenJets_PU140.tcl"
 if delphes_args.delphescard != None:
     delphesCard = delphes_args.delphescard
 
@@ -93,8 +93,9 @@ out_names = {
     "photons": {"particles": "genPhotons", "mcAssociations": "photonsToMC", "isolationTags": "photonITags"},
     # GenJets output tool
     "nonPropagatedGenJets": {"genJets": "nonPropagatedGenJets", "genJetsFlavorTagged": "nonPropagatedGenJetsFlavor"},
-
     "propagatedGenJets": {"genJets": "propagatedGenJets", "genJetsFlavorTagged": "propagatedGenJetsFlavor"},
+    "nonPropagatedGenJetsPileUp": {"genJets": "nonPropagatedGenJetsPileUp", "genJetsFlavorTagged": "nonPropagatedGenJetsPileUpFlavor"},
+    "propagatedGenJetsPileUp": {"genJets": "propagatedGenJetsPileUp", "genJetsFlavorTagged": "propagatedGenJetsPileUpFlavor"},
     # Missing transverse energy output tool
     "met": {"missingEt": "genMET"}
     }
@@ -124,6 +125,12 @@ apply_paths(nonPropagatedGenJetSaveTool, out_names["nonPropagatedGenJets"])
 propagatedGenJetSaveTool = DelphesSaveGenJets("propagatedGenJets", delphesArrayName="PropagatedGenJetFinder/jets")
 apply_paths(propagatedGenJetSaveTool, out_names["propagatedGenJets"])
 
+nonPropagatedGenJetSaveToolPileUp = DelphesSaveGenJets("nonPropagatedGenJetsPileUp", delphesArrayName="NonPropagatedGenJetFinderPileUp/jets")
+apply_paths(nonPropagatedGenJetSaveToolPileUp, out_names["nonPropagatedGenJetsPileUp"])
+
+propagatedGenJetSaveToolPileUp = DelphesSaveGenJets("propagatedGenJetsPileUp", delphesArrayName="PropagatedGenJetFinderPileUp/jets")
+apply_paths(propagatedGenJetSaveToolPileUp, out_names["propagatedGenJetsPileUp"])
+
 metSaveTool = DelphesSaveMet("genMET", delphesMETArrayName="GenMissingET/momentum", delphesSHTArrayName="GenScalarHT/energy")
 apply_paths(metSaveTool, out_names["met"])
 
@@ -143,11 +150,9 @@ smeartool = GaussSmearVertex(
 
 pythia8gentool = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
 mergetool = HepMCFullMerge()
-pileuptool = PoissonPileUp(numPileUpEvents=140)
-VertexSmearingTool=smeartool
 ## Write the HepMC::GenEvent to the data service
 from Configurables import GenAlg
-pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool, PileUpProvider=pythia8gentool, PileUpTool=pileuptool, HepMCMergeTool=mergetool, VertexSmearingTool=smeartool)
+pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)
 pythia8gen.hepmc.Path = "hepmc"
 
 ## Delphes simulator -> define objects to be written out
@@ -160,7 +165,9 @@ delphessim = DelphesSimulation(DelphesCard=delphesCard,
                                         "DelphesSaveChargedParticles/genElectrons",
                                         "DelphesSaveNeutralParticles/genPhotons",
                                         "DelphesSaveGenJets/nonPropagatedGenJets",
+                                        "DelphesSaveGenJets/nonPropagatedGenJetsPileUp",
                                         "DelphesSaveGenJets/propagatedGenJets",
+                                        "DelphesSaveGenJets/propagatedGenJetsPileUp",
                                         "DelphesSaveMet/genMET"])
 delphessim.hepmc.Path                = "hepmc"
 delphessim.genParticles.Path        = "skimmedGenParticles"

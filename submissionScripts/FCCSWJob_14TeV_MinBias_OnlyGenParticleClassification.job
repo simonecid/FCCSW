@@ -1,5 +1,5 @@
 Universe = vanilla
-job = NeutrinoGun_PU140_NoTau_100events_13TeV_DelphesCMS_OnlyGenParticleClassification_PU140
+job = MinimumBias_14TeV_OnlyGenParticleClassification_JetPTMin_3
 cmd = submissionScripts/FCCRunWrapper.sh
 args = -j $(job) -c $(cluster) -p $(process) -n 20000 -i Pythia_minbias_pp_14TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_OnlyGenParticleClassification_MinBias.py -d MinimumBias_14TeV_OnlyGenParticleClassification_JetPTMin_3
 # Better not to put logs in the same folder, as they are plenty

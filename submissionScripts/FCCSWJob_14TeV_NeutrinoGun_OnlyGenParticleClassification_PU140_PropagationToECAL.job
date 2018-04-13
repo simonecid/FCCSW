@@ -1,7 +1,7 @@
 Universe = vanilla
-job = NeutrinoGun_PU140_NoTau_100events_14TeV_DelphesCMS_OnlyGenParticleClassification_PropagationToECAL
+job = NeutrinoGun_PU140_NoTau_100events_14TeV_DelphesCMS_OnlyGenParticleClassification_PropagationToECAL_VertexSpread
 cmd = submissionScripts/FCCRunWrapper.sh
-args = -j $(job) -c $(cluster) -p $(process) -n 100 -i Pythia_minbias_pp_14TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_OnlyGenParticleClassification_PU140_WPropagation.py -d NeutrinoGun_PU140_14TeV_OnlyGenParticleClassification_JetPTMin_3_PropagatedGenJetAtECAL
+args = -j $(job) -c $(cluster) -p $(process) -n 100 -i Pythia_minbias_pp_14TeV.cmd -s Sim/SimDelphesInterface/options/PythiaDelphes_config_OnlyGenParticleClassification_PU140_WPropagation.py -d NeutrinoGun_PU140_14TeV_OnlyGenParticleClassification_JetPTMin_3_PropagatedGenJetAtECAL_VertexSpread
 # Better not to put logs in the same folder, as they are plenty
 output = /storage/sb17498/logs/FCCSW/$(job)_$(cluster).$(process).out
 error = /storage/sb17498/logs/FCCSW/$(job)_$(cluster).$(process).err

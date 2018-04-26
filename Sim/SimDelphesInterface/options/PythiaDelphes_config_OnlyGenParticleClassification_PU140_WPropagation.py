@@ -141,15 +141,7 @@ from Configurables import HepMCFullMerge
 from Configurables import GaussSmearVertex
 from FCCPileupScenarios import FCCPhase1PileupConf as pileupconf
 
-smeartool = GaussSmearVertex(
-    xVertexSigma=pileupconf['xVertexSigma'],
-    yVertexSigma=pileupconf['yVertexSigma'],
-    zVertexSigma=pileupconf['zVertexSigma'],
-    tVertexSigma=pileupconf['tVertexSigma'],
-)
-
 pythia8gentool = PythiaInterface(Filename=pythiaConfFile, OutputLevel=messageLevelPythia)
-mergetool = HepMCFullMerge()
 ## Write the HepMC::GenEvent to the data service
 from Configurables import GenAlg
 pythia8gen = GenAlg("Pythia8", SignalProvider=pythia8gentool)

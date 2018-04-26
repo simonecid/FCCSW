@@ -38,7 +38,7 @@ module SequentialPileUpMerger SequentialPileUpMerger {
   set VertexOutputArray vertices
 
   # pre-generated minbias input file
-  set PileUpFile pileup14TeV.pileup
+  set PileUpFile Minbias.pileup
   
   # average expected pile up
   #set MeanPileUp 0

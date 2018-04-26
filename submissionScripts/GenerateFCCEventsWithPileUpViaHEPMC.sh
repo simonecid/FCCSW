@@ -38,7 +38,7 @@ done
 
 set -o xtrace
 
-NUMBER_OF_PYTHIA_EVENTS = $(echo "${nEvents}*${pileup}+sqrt(${nEvents}*${pileup})*5" | bc)
+NUMBER_OF_PYTHIA_EVENTS=$(echo "${nEvents}*${pileup}+sqrt(${nEvents}*${pileup})*5" | bc)
 
 echo "I am running on" $HOSTNAME
 

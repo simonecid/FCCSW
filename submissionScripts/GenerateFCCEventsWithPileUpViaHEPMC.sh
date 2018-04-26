@@ -5,7 +5,6 @@ SAVE_DEST="$(pwd)"
 nEvents=5000
 
 # Destination in /HDFS/FCC-hh
-inputFile="Pythia_HardQCD_700_900.cmd"
 software="/software/sb17498/FCCSW"
 config="Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS.py"
 
@@ -39,7 +38,7 @@ done
 
 set -o xtrace
 
-NUMBER_OF_PYTHIA_EVENTS = `echo "${nEvents}*${pileup}+sqrt(${nEvents}*${pileup})*5" | bc`
+NUMBER_OF_PYTHIA_EVENTS = $(echo "${nEvents}*${pileup}+sqrt(${nEvents}*${pileup})*5" | bc)
 
 echo "I am running on" $HOSTNAME
 

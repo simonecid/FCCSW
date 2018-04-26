@@ -32,13 +32,11 @@ while getopts "j:c:p:i:n:s:d:p:" o; do
       HDFS_DEST=${OPTARG}
       ;;
     p)
-      pileup=${OPTARG}
+      NUMBER_OF_PYTHIA_EVENTS=${OPTARG}
     esac
 done
 
 set -o xtrace
-
-NUMBER_OF_PYTHIA_EVENTS=$(echo "${nEvents}*${pileup}+sqrt(${nEvents}*${pileup})*5" | bc)
 
 echo "I am running on" $HOSTNAME
 

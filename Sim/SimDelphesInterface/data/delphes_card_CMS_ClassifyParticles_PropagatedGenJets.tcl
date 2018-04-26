@@ -4,13 +4,8 @@
 
 set ExecutionPath {
 
-  PropagateToECAL
 
-  SetPositionEtaPhiToMomentum
-  PropagatedNeutrinoFilter
-  PropagatedGenJetFinder
   GenElectronFilter
-
   GenMuonFilter
   GenPhotonFilter
   NonPropagatedNeutrinoFilter
@@ -18,7 +13,16 @@ set ExecutionPath {
   GenMissingET
   GenScalarHT
 
-    
+  PropagateToECAL
+  SetPositionEtaPhiToMomentum
+  PropagatedNeutrinoFilter
+  PropagatedGenJetFinder
+
+}
+
+module SetPositionEtaPhiToMomentum SetPositionEtaPhiToMomentum {
+  set InputArray PropagateToECAL/stableParticles
+  set OutputArray stableParticles
 }
 
 #########################################
@@ -135,15 +139,6 @@ module Merger GenScalarHT {
   add InputArray GenPhotonFilter/photons
   add InputArray GenMuonFilter/muons
   set EnergyOutputArray energy
-}
-
-##################################
-# Set momentum for propagated jets
-##################################
-
-module SetPositionEtaPhiToMomentum SetPositionEtaPhiToMomentum {
-  set InputArray PropagateToECAL/stableParticles
-  set OutputArray stableParticles
 }
 
 #####################

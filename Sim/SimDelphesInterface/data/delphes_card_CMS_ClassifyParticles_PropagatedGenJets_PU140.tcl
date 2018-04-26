@@ -4,23 +4,26 @@
 
 set ExecutionPath {
 
-  PileUpMerger
+  SequentialPileUpMerger
 
-  PropagateToECAL
-
-  SetPositionEtaPhiToMomentum
-  PropagatedNeutrinoFilter
-  PropagatedGenJetFinder
-  PropagatedGenJetFinderPileUp
   GenElectronFilter
-
   GenMuonFilter
   GenPhotonFilter
+  
   NonPropagatedNeutrinoFilter
   NonPropagatedGenJetFinder
   NonPropagatedGenJetFinderPileUp
   GenMissingET
   GenScalarHT
+  
+
+  PropagateToECAL
+  SetPositionEtaPhiToMomentum
+  PropagatedNeutrinoFilter
+  PropagatedGenJetFinder
+  PropagatedGenJetFinderPileUp
+
+
     
 }
 
@@ -28,17 +31,20 @@ set ExecutionPath {
 # PileUp Merger
 ###############
 
-module PileUpMerger PileUpMerger {
+module SequentialPileUpMerger SequentialPileUpMerger {
   set InputArray Delphes/stableParticles
 
   set ParticleOutputArray stableParticles
   set VertexOutputArray vertices
 
   # pre-generated minbias input file
-  set PileUpFile /hdfs/FCC-hh/MinBias_50kevents.pileup
+  set PileUpFile pileup14TeV.pileup
   
   # average expected pile up
+  #set MeanPileUp 0
   set MeanPileUp 140
+
+  #set PileUpDistribution 2
 
   # maximum spread in the beam direction in m
   set ZVertexSpread 0.25
@@ -56,7 +62,7 @@ module PileUpMerger PileUpMerger {
 #########################################
 
 module ParticlePropagator PropagateToECAL {
-  set InputArray Delphes/stableParticles
+  set InputArray SequentialPileUpMerger/stableParticles
 
   set OutputArray stableParticles
   set ChargedHadronOutputArray chargedHadrons
@@ -77,7 +83,7 @@ module ParticlePropagator PropagateToECAL {
 #################
 
 module PdgCodeFilter GenElectronFilter {
-  set InputArray Delphes/stableParticles
+  set InputArray SequentialPileUpMerger/stableParticles
   set OutputArray electrons
   set Invert true
   add PdgCode {11}
@@ -89,7 +95,7 @@ module PdgCodeFilter GenElectronFilter {
 #################
 
 module PdgCodeFilter GenMuonFilter {
-  set InputArray Delphes/stableParticles
+  set InputArray SequentialPileUpMerger/stableParticles
   set OutputArray muons
   set Invert true
   add PdgCode {13}
@@ -101,7 +107,7 @@ module PdgCodeFilter GenMuonFilter {
 #################
 
 module PdgCodeFilter GenPhotonFilter {
-  set InputArray Delphes/stableParticles
+  set InputArray SequentialPileUpMerger/stableParticles
   set OutputArray photons
   set Invert true
   add PdgCode {22}
@@ -114,7 +120,7 @@ module PdgCodeFilter GenPhotonFilter {
 
 module PdgCodeFilter NonPropagatedNeutrinoFilter {
 
-  set InputArray Delphes/stableParticles
+  set InputArray SequentialPileUpMerger/stableParticles
   set OutputArray filteredParticles
 
   set PTMin 0.0
@@ -132,8 +138,8 @@ module PdgCodeFilter NonPropagatedNeutrinoFilter {
 # MC truth jet finder
 #####################
 
-module FastJetFinder NonPropagatedGenJetFinder {
-  set InputArray PileUpMerger/stableParticles
+module FastJetFinder NonPropagatedGenJetFinderPileUp {
+  set InputArray NonPropagatedNeutrinoFilter/filteredParticles
 
   set OutputArray jets
 
@@ -144,8 +150,8 @@ module FastJetFinder NonPropagatedGenJetFinder {
   set JetPTMin 3.0
 }
 
-module FastJetFinderPileUp NonPropagatedGenJetFinderPileUp {
-  set InputArray PileUpMerger/stableParticles
+module FastJetFinderPileUp NonPropagatedGenJetFinder {
+  set InputArray NonPropagatedNeutrinoFilter/filteredParticles
 
   set OutputArray jets
 
@@ -212,7 +218,7 @@ module PdgCodeFilter PropagatedNeutrinoFilter {
 # MC truth jet finder
 #####################
 
-module FastJetFinder PropagatedGenJetFinder {
+module FastJetFinder PropagatedGenJetFinderPileUp {
   set InputArray PropagatedNeutrinoFilter/filteredParticles
 
   set OutputArray jets
@@ -224,7 +230,7 @@ module FastJetFinder PropagatedGenJetFinder {
   set JetPTMin 3.0
 }
 
-module FastJetFinderPileUp PropagatedGenJetFinderPileUp {
+module FastJetFinderPileUp PropagatedGenJetFinder {
   set InputArray PropagatedNeutrinoFilter/filteredParticles
 
   set OutputArray jets

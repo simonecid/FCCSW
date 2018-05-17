@@ -8,7 +8,7 @@ nEvents=5000
 software="/software/sb17498/FCCSW"
 config="Sim/SimDelphesInterface/options/PythiaDelphes_config_CMS.py"
 
-while getopts "j:c:p:i:n:s:d:p:" o; do
+while getopts "j:c:p:i:n:s:d:m:" o; do
   case "${o}" in
     j)
       jobName=${OPTARG}
@@ -31,8 +31,9 @@ while getopts "j:c:p:i:n:s:d:p:" o; do
     d)
       HDFS_DEST=${OPTARG}
       ;;
-    p)
+    m)
       NUMBER_OF_PYTHIA_EVENTS=${OPTARG}
+      ;;
     esac
 done
 
@@ -68,5 +69,4 @@ rm Minbias.pileup
 /usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/${HDFS_DEST}
 
 # Removing cmd to avoid a copy in the submission folder
-rm ${SAVE_DEST}/${inputFile}
 set +o xtrace

@@ -58,7 +58,7 @@ make -j4
 rm ${SAVE_DEST}/events.hepmc
 
 #running the delphes sim
-./run fccrun.py ${software}/${config} --outputfile=${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root --inputfile=${SAVE_DEST}/${inputFile} --nevents=${nEvents}
+./run fccrun.py ${software}/${config} --outputfile=${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root --inputfile=/software/sb17498/pythia8223/pythia-FCC/${inputFile} --nevents=${nEvents}
 echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
 
 rm Minbias.pileup

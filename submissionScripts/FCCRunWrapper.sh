@@ -61,5 +61,4 @@ echo "${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root"
 /usr/bin/hdfs dfs -moveFromLocal ${SAVE_DEST}/events_${jobName}_${clusterId}.${processId}.root /FCC-hh/${HDFS_DEST}
 
 # Removing cmd to avoid a copy in the submission folder
-rm ${SAVE_DEST}/${inputFile}
 set +o xtrace

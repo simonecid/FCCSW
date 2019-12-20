@@ -12,8 +12,6 @@ include(DD4hep)
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-gaudi_install_headers(DetSensitive)
-
 gaudi_add_library(DetSensitive
                   src/*.cpp
                   INCLUDE_DIRS Geant4 DD4hep ROOT DetCommon
@@ -26,30 +24,9 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 dd4hep_generate_rootmap(DetSensitive)
 
 include(CTest)
-gaudi_add_test(InternalTrackerSD
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
-               FRAMEWORK tests/options/testDd4hepTrackerSD.py)
 gaudi_add_test(ExternalTrackerSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
                FRAMEWORK tests/options/testSimpleTrackerSD.py)
-gaudi_add_test(CmpTrackerSDNoHits
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
-               COMMAND python ./scripts/cmpTrackerSdNoHits.py
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS InternalTrackerSD ExternalTrackerSD)
-gaudi_add_test(CmpTrackerSDDetailed
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
-               COMMAND python ./scripts/cmpTrackerSdDetailed.py
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS InternalTrackerSD ExternalTrackerSD)
-gaudi_add_test(CmpTrackerSDHitsAndClusters
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
-               COMMAND python ./scripts/cmpTrackerSdHitsAndClusters.py
-               ENVIRONMENT PYTHONPATH+=$ENV{PODIO}/python
-               DEPENDS InternalTrackerSD ExternalTrackerSD)
-gaudi_add_test(InternalCalorimeterSD
-               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
-               FRAMEWORK tests/options/testDd4hepCaloSD.py)
 gaudi_add_test(ExternalCalorimeterSD
                WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Detector/DetSensitive/tests/
                FRAMEWORK tests/options/testSimpleCaloSD.py)

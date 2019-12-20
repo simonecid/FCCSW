@@ -1,7 +1,7 @@
 
 #include "DetInterface/IGeoSvc.h"
 #include "DD4hep/Detector.h"
-#include "DDSegmentation/BitField64.h"
+#include "DD4hep/BitFieldCoder.h"
 #include "DDSegmentation/CartesianGridXZ.h"
 
 #include "datamodel/PositionedTrackHitCollection.h"
@@ -16,11 +16,12 @@
 #include "RecTracker/TrackingUtils.h"
 
 
-DECLARE_ALGORITHM_FACTORY(FastGaussSmearDigi)
+DECLARE_COMPONENT(FastGaussSmearDigi)
 
 
 
-FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svcLoc) : GaudiAlgorithm(name, svcLoc) {
+FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svcLoc) :
+    GaudiAlgorithm(name, svcLoc), m_geoSvc("GeoSvc", name) {
 
   declareProperty("smearedHits", m_smearedTrackHits, "Smeared Tracker hits (Output)");
   declareProperty("trackHits", m_trackHits, "Tracker hits (Input)");
@@ -29,7 +30,7 @@ FastGaussSmearDigi::FastGaussSmearDigi(const std::string& name, ISvcLocator* svc
 StatusCode FastGaussSmearDigi::initialize() {
   info() << "initialize" << endmsg;
 
-  m_geoSvc = service("GeoSvc");
+  
 
   StatusCode sc = GaudiAlgorithm::initialize();
   if (sc.isFailure()) return sc;
@@ -58,15 +59,17 @@ StatusCode FastGaussSmearDigi::execute() {
   auto edmPositions = m_smearedTrackHits.createAndPut();
   for (const auto& hit : sortedHits) {
     const fcc::BareHit& hitCore = hit.core();
-    m_decoder->setValue(hit.core().cellId);
+    dd4hep::DDSegmentation::CellID cID = hit.core().cellId;
     /// the local coordinates on the module
     // add segmentation info and smearing here
-    std::array<double, 3> localPos = {(*m_decoder)["x"] * m_segGridSizeX + m_gaussDist() / sqrt(12.) * m_segGridSizeX, 0,
-                   (*m_decoder)["z"] * m_segGridSizeZ + m_gaussDist() / sqrt(12.) * m_segGridSizeZ};
+    int x = m_decoder->get(cID, "x");
+    int z = m_decoder->get(cID, "z");
+    std::array<double, 3> localPos = {x * m_segGridSizeX + m_gaussDist() / sqrt(12.) * m_segGridSizeX, 0,
+                   		      z * m_segGridSizeZ + m_gaussDist() / sqrt(12.) * m_segGridSizeZ};
     // global coordinates, will be filled by the transform
     std::array<double, 3> globalPos = {0, 0, 0};
     // direct lookup of transformation in the volume manager is broken in dd4hep
-    auto detelement = m_volman.lookupDetElement(m_decoder->getValue());
+    auto detelement = m_volman.lookupDetElement(cID);
     const auto& localToGlobal = detelement.nominal().worldTransformation();
     localToGlobal.LocalToMaster(localPos.data(), globalPos.data());
     auto position = fcc::Point();

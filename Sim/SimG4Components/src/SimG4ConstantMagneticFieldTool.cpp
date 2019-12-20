@@ -9,6 +9,7 @@
 #include "G4FieldManager.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
+#include "G4MagIntegratorDriver.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
 #include "G4ClassicalRK4.hh"
@@ -49,7 +50,7 @@ StatusCode SimG4ConstantMagneticFieldTool::initialize() {
 
     fieldManager->CreateChordFinder(m_field);
     G4ChordFinder* chordFinder = fieldManager->GetChordFinder();
-    chordFinder->GetIntegrationDriver()->RenewStepperAndAdjust(stepper(m_integratorStepper, m_field));
+    chordFinder->GetIntegrationDriver()->RenewStepperAndAdjust(stepper(m_integratorStepper, m_field)); 
 
     propagator->SetLargestAcceptableStep(m_maxStep);
 

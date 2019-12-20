@@ -7,7 +7,7 @@
 
 #include "DD4hep/Detector.h"
 #include "DD4hep/Volumes.h"
-#include "DDRec/API/IDDecoder.h"
+//#include "DDRec/API/IDDecoder.h"
 #include "DDSegmentation/BitField64.h"
 #include "DDSegmentation/CartesianGridXZ.h"
 
@@ -18,7 +18,7 @@
 #include "RecInterface/ITrackSeedingTool.h"
 #include "RecTracker/TrackingUtils.h"
 
-DECLARE_ALGORITHM_FACTORY(CombinatorialSeedingTest)
+DECLARE_COMPONENT(CombinatorialSeedingTest)
 
 CombinatorialSeedingTest::CombinatorialSeedingTest(const std::string& name, ISvcLocator* svcLoc)
     : GaudiAlgorithm(name, svcLoc) {

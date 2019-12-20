@@ -13,7 +13,7 @@ class IGeoSvc;
 // DD4hep
 namespace dd4hep {
 namespace DDSegmentation {
-class BitField64;
+class BitFieldCoder;
 }
 }
 
@@ -48,13 +48,13 @@ public:
 
 private:
   /// Pointer to the geometry service
-  SmartIF<IGeoSvc> m_geoSvc;
+  ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for the EDM Hits to be read
   DataHandle<fcc::CaloHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
   /// Name of the detector readout
   Gaudi::Property<std::string> m_readoutName{this, "readout", "", "Name of the detector readout"};
   /// Pointer to the bitfield decoder
-  dd4hep::DDSegmentation::BitField64* m_decoder;
+  const dd4hep::DDSegmentation::BitFieldCoder* m_decoder;
   /// Names of the fields for which neighbours are found
   std::vector<std::string> m_fieldNames;
   /// Minimal and maximal values of the fields for which neighbours are found

@@ -1,4 +1,5 @@
 #include "PodioOutput.h"
+#include "GaudiKernel/IJobOptionsSvc.h"
 #include "FWCore/PodioDataSvc.h"
 #include "TFile.h"
 
@@ -14,9 +15,10 @@ StatusCode PodioOutput::initialize() {
   m_podioDataSvc = dynamic_cast<PodioDataSvc*>(evtSvc().get());
   if (0 == m_podioDataSvc) return StatusCode::FAILURE;
 
-  m_file = std::unique_ptr<TFile>(new TFile(m_filename.value().c_str(), "RECREATE", "data file"));
+  m_file = std::unique_ptr<TFile>(TFile::Open(m_filename.value().c_str(), "RECREATE", "data file"));
   // Both trees are written to the ROOT file and owned by it
-  m_datatree = new TTree("events", "Events tree");
+  // PodioDataSvc has ownership of EventDataTree
+  m_datatree = m_podioDataSvc->eventDataTree();
   m_metadatatree = new TTree("metadata", "Metadata tree");
   m_switch = KeepDropSwitch(m_outputCommands);
   return StatusCode::SUCCESS;
@@ -106,9 +108,26 @@ StatusCode PodioOutput::execute() {
 
 StatusCode PodioOutput::finalize() {
   if (GaudiAlgorithm::finalize().isFailure()) return StatusCode::FAILURE;
+  // retrieve the configuration of the job
+  // and write it to file as vector of strings
+  std::vector<std::string> config_data;
+  auto jobOptionsSvc = service<IJobOptionsSvc>("JobOptionsSvc");
+  auto configured_components = jobOptionsSvc->getClients();
+  for (const auto& name : configured_components) {
+      auto properties = jobOptionsSvc->getProperties(name);
+      std::stringstream config_stream;
+      for (const auto& property : *properties) {
+          config_stream << name << " : " << property->name() << " = " << property->toString() << std::endl;
+        }
+        config_data.push_back(config_stream.str());
+      }
+      m_metadatatree->Branch("gaudiConfigOptions", &config_data);
+      
   m_metadatatree->Branch("CollectionIDs", m_podioDataSvc->getCollectionIDs());
   m_metadatatree->Fill();
+  m_datatree->Write();
   m_file->Write();
   m_file->Close();
+  info() << "Data written to: " << m_filename << endmsg;
   return StatusCode::SUCCESS;
 }

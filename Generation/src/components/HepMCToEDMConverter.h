@@ -5,7 +5,6 @@
 #include "GaudiAlg/GaudiAlgorithm.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/Units.h"
-#include "GaudiKernel/IParticlePropertySvc.h"
 
 namespace fcc {
 class MCParticleCollection;
@@ -13,7 +12,6 @@ class GenVertexCollection;
 }
 
 class HepMCToEDMConverter : public GaudiAlgorithm {
-  friend class AlgFactory<HepMCToEDMConverter>;
 
 public:
   /// Constructor.

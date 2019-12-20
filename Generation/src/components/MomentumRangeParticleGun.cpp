@@ -2,9 +2,7 @@
 
 #include <cmath>
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
-#include "GaudiKernel/ParticleProperty.h"
 #include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/SystemOfUnits.h"
 
@@ -12,7 +10,7 @@
 #include "HepPDT/ParticleID.hh"
 #include "Pythia8/ParticleData.h"
 
-DECLARE_TOOL_FACTORY(MomentumRangeParticleGun)
+DECLARE_COMPONENT(MomentumRangeParticleGun)
 
 /// Constructor
 MomentumRangeParticleGun::MomentumRangeParticleGun(const std::string& type,
@@ -111,12 +109,10 @@ StatusCode MomentumRangeParticleGun::getNextEvent(HepMC::GenEvent& theEvent) {
   generateParticle(theFourMomentum, origin, thePdgId);
 
   // create HepMC Vertex --
-  // by calling add_vertex(), the hepmc event is given ownership
-  //  of the vertex
+  // by calling add_vertex(), the hepmc event is given ownership of the vertex
   HepMC::GenVertex* v = new HepMC::GenVertex(HepMC::FourVector(origin.X(), origin.Y(), origin.Z(), origin.T()));
   // create HepMC particle --
-  // by calling add_particle_out(), the hepmc vertex is given ownership
-  // of the particle
+  // by calling add_particle_out(), the hepmc vertex is given ownership of the particle
   HepMC::GenParticle* p = new HepMC::GenParticle(
       HepMC::FourVector(theFourMomentum.Px(), theFourMomentum.Py(), theFourMomentum.Pz(), theFourMomentum.E()),
       thePdgId,

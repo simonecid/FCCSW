@@ -8,12 +8,12 @@ This software is based on Gaudi.
 Installation
 ------------
 
-Log in to lxplus SLC6. Please note that these instructions might not work on another SLC6 machine.
+Log in to lxplus (CentOS7). Please note that these instructions might not work on another CentOS7 machine.
 
 Clone your fork of this repository:
 
 ~~~{.sh}
-git clone git@github.com:[your-github-username]/FCCSW.git
+git clone https://github.com/HEP-FCC/FCCSW.git
 cd FCCSW
 ~~~
 
@@ -36,7 +36,7 @@ Test
 ./run fccrun.py Examples/options/example_options.py
 ~~~
 
-you can also sepcify some options like number of events and output file
+you can also specify some options like number of events and output file
 ~~~{.sh}
 ./run fccrun.py Examples/options/example_options.py --outputfile=my_own_output.root --nevents=1000
 ~~~
@@ -51,4 +51,4 @@ make test
 Documentation
 ----
 
-Please consult [FCCSW documentation](http://fccsw.web.cern.ch/fccsw/)
+Please consult [FCCSW documentation](http://hep-fcc.github.io/FCCSW/)

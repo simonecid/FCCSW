@@ -5,12 +5,10 @@ gaudi_subdir(DetSegmentation v1r0)
 
 gaudi_depends_on_subdirs(GaudiKernel)
 
-find_package(DD4hep COMPONENTS DDG4 DDSegmentation REQUIRED)
+find_package(DD4hep COMPONENTS DDG4 REQUIRED)
 include(DD4hep)
 
 find_package(ROOT COMPONENTS MathCore Physics GenVector Geom REQUIRED)
-
-gaudi_install_headers(DetSegmentation)
 
 gaudi_add_library(DetSegmentation
                  src/*.cpp

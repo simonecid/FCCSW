@@ -12,9 +12,9 @@
 #include "DD4hep/Detector.h"
 #include "DDSegmentation/Segmentation.h"
 
-DECLARE_ALGORITHM_FACTORY(RedoSegmentation)
+DECLARE_COMPONENT(RedoSegmentation)
 
-RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
+RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("inhits", m_inHits, "Hit collection with old segmentation (input)");
   declareProperty("outhits", m_outHits, "Hit collection with modified segmentation (output)");
 }
@@ -23,7 +23,7 @@ RedoSegmentation::~RedoSegmentation() {}
 
 StatusCode RedoSegmentation::initialize() {
   if (GaudiAlgorithm::initialize().isFailure()) return StatusCode::FAILURE;
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -81,29 +81,28 @@ StatusCode RedoSegmentation::execute() {
   auto outHits = m_outHits.createAndPut();
   // loop over positioned hits to get the energy deposits: position and cellID
   // cellID contains the volumeID that needs to be copied to the new id
-  uint64_t oldid = 0;
+  dd4hep::DDSegmentation::CellID oldid = 0;
   uint debugIter = 0;
   for (const auto& hit : *inHits) {
     fcc::CaloHit newHit = outHits->create();
     newHit.energy(hit.energy());
     newHit.time(hit.time());
-    m_oldDecoder->setValue(hit.cellId());
+    dd4hep::DDSegmentation::CellID cellId = hit.cellId();
     if (debugIter < m_debugPrint) {
-      debug() << "OLD: " << m_oldDecoder->valueString() << endmsg;
+      debug() << "OLD: " << m_oldDecoder->valueString(cellId) << endmsg;
     }
     // factor 10 to convert mm to cm
     dd4hep::DDSegmentation::Vector3D position(hit.position().x / 10, hit.position().y / 10, hit.position().z / 10);
     // first calculate proper segmentation fields
-    uint64_t newcellId = m_segmentation->cellID(position, position, volumeID(hit.cellId()));
-    m_segmentation->decoder()->setValue(newcellId);
+    dd4hep::DDSegmentation::CellID newCellId = m_segmentation->cellID(position, position, 0);
     // now rewrite all other fields (detector ID)
     for (const auto& detectorField : m_detectorIdentifiers) {
-      oldid = (*m_oldDecoder)[detectorField];
-      (*m_segmentation->decoder())[detectorField] = oldid;
+      oldid = m_oldDecoder->get(cellId, detectorField);
+      m_segmentation->decoder()->set(newCellId, detectorField, oldid);
     }
-    newHit.cellId(m_segmentation->decoder()->getValue());
+    newHit.cellId(newCellId);
     if (debugIter < m_debugPrint) {
-      debug() << "NEW: " << m_segmentation->decoder()->valueString() << endmsg;
+      debug() << "NEW: " << m_segmentation->decoder()->valueString(newCellId) << endmsg;
       debugIter++;
     }
   }
@@ -115,9 +114,9 @@ StatusCode RedoSegmentation::finalize() {
    return GaudiAlgorithm::finalize(); }
 
 uint64_t RedoSegmentation::volumeID(uint64_t aCellId) const {
-  m_oldDecoder->setValue(aCellId);
+  dd4hep::DDSegmentation::CellID cID = aCellId;
   for (const auto& identifier : m_oldIdentifiers) {
-    (*m_oldDecoder)[identifier] = 0;
+    m_oldDecoder->set(cID, identifier, 0);
   }
-  return m_oldDecoder->getValue();
+  return cID;
 }

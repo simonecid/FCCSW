@@ -16,9 +16,9 @@
 // STL
 #include <numeric>
 
-DECLARE_ALGORITHM_FACTORY(MergeLayers)
+DECLARE_COMPONENT(MergeLayers)
 
-MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {
+MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("inhits", m_inHits, "Hit collection to merge (input)");
   declareProperty("outhits", m_outHits, "Merged hit collection (output)");
 }
@@ -31,7 +31,7 @@ StatusCode MergeLayers::initialize() {
     error() << "No identifier to merge specified." << endmsg;
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -47,7 +47,7 @@ StatusCode MergeLayers::initialize() {
   // check if identifier exists in the decoder
   auto itIdentifier = std::find_if(m_descriptor.fields().begin(),
                                    m_descriptor.fields().end(),
-                                   [this](const std::pair<std::string, dd4hep::BitFieldValue*>& field) {
+                                   [this](const std::pair<std::string, const dd4hep::BitFieldElement*>& field) {
                                      return bool(field.first.compare(m_idToMerge) == 0);
                                    });
   if (itIdentifier == m_descriptor.fields().end()) {
@@ -76,15 +76,14 @@ StatusCode MergeLayers::execute() {
 
   unsigned int field_id = m_descriptor.fieldID(m_idToMerge);
   auto decoder = m_descriptor.decoder();
-  uint64_t cellId = 0;
+  dd4hep::DDSegmentation::CellID cellId = 0;
   unsigned int value = 0;
   unsigned int debugIter = 0;
 
   for (const auto& hit : *inHits) {
     fcc::CaloHit newHit = outHits->create(hit.core());
     cellId = hit.cellId();
-    decoder->setValue(cellId);
-    value = (*decoder)[field_id].value();
+    value = decoder->get(cellId, field_id);
     if (debugIter < m_debugPrint) {
       debug() << "old ID = " << value << endmsg;
     }
@@ -98,8 +97,8 @@ StatusCode MergeLayers::execute() {
       debug() << "new ID = " << value << endmsg;
       debugIter++;
     }
-    (*decoder)[field_id] = value;
-    newHit.cellId(decoder->getValue());
+    decoder->set(cellId, field_id, value);
+    newHit.cellId(cellId);
   }
   m_outHits.put(outHits);
 

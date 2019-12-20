@@ -1,13 +1,12 @@
 #include "GaussSmearVertex.h"
 
-#include "GaudiKernel/DeclareFactoryEntries.h"
 #include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/PhysicalConstants.h"
 #include "GaudiKernel/SystemOfUnits.h"
 #include "GaudiKernel/Vector4DTypes.h"
 
 /// Declaration of the Tool Factory
-DECLARE_TOOL_FACTORY(GaussSmearVertex)
+DECLARE_COMPONENT(GaussSmearVertex)
 
 /// Standard constructor, initializes variables
 GaussSmearVertex::GaussSmearVertex(const std::string& type, const std::string& name, const IInterface* parent)
@@ -48,10 +47,10 @@ StatusCode GaussSmearVertex::initialize() {
 /// Smearing function
 StatusCode GaussSmearVertex::smearVertex(HepMC::GenEvent& theEvent) {
 
-  double dx = m_gaussDist() * sqrt(m_xsig) + m_xmean;
-  double dy = m_gaussDist() * sqrt(m_ysig) + m_ymean;
-  double dz = m_gaussDist() * sqrt(m_zsig) + m_zmean;
-  double dt = m_gaussDist() * sqrt(m_tsig) + m_tmean;
+  double dx = m_gaussDist() * m_xsig + m_xmean;
+  double dy = m_gaussDist() * m_ysig + m_ymean;
+  double dz = m_gaussDist() * m_zsig + m_zmean;
+  double dt = m_gaussDist() * m_tsig + m_tmean;
 
   Gaudi::LorentzVector dpos(dx, dy, dz, dt);
 

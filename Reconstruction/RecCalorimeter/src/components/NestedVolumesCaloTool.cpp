@@ -5,17 +5,17 @@
 #include "DetCommon/DetUtils.h"
 #include "DetInterface/IGeoSvc.h"
 
-DECLARE_TOOL_FACTORY(NestedVolumesCaloTool)
+DECLARE_COMPONENT(NestedVolumesCaloTool)
 
 NestedVolumesCaloTool::NestedVolumesCaloTool(const std::string& type, const std::string& name, const IInterface* parent)
-    : GaudiTool(type, name, parent) {
+    : GaudiTool(type, name, parent), m_geoSvc("GeoSvc", name) {
   declareInterface<ICalorimeterTool>(this);
 }
 
 StatusCode NestedVolumesCaloTool::initialize() {
   StatusCode sc = GaudiTool::initialize();
   if (sc.isFailure()) return sc;
-  m_geoSvc = service("GeoSvc");
+  
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -40,8 +40,9 @@ StatusCode NestedVolumesCaloTool::prepareEmptyCells(std::unordered_map<uint64_t,
     return StatusCode::FAILURE;
   }
   // Get VolumeID
+  dd4hep::DDSegmentation::CellID cID = 0;
   for (unsigned int it = 0; it < m_fieldNames.size(); it++) {
-    (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
+    decoder->set(cID, m_fieldNames[it], m_fieldValues[it]);
   }
   // Get the total number of given hierarchy of active volumes
   auto highestVol = gGeoManager->GetTopVolume();
@@ -90,11 +91,11 @@ StatusCode NestedVolumesCaloTool::prepareEmptyCells(std::unordered_map<uint64_t,
   do {
     index = 0;
     for (unsigned int it = 0; it < numVolTypes; it++) {
-      (*decoder)[numVolumesMap[it].first] = currentVol[it];
+      decoder->set(cID, numVolumesMap[it].first, currentVol[it]);
     }
-    aCells.insert(std::pair<uint64_t, double>(decoder->getValue(), 0));
+    aCells.insert(std::pair<uint64_t, double>(cID, 0));
     if (msgLevel() <= MSG::VERBOSE) {
-      verbose() << "Adding volume: " << decoder->valueString() << endmsg;
+      verbose() << "Adding volume: " << decoder->valueString(cID) << endmsg;
     }
     // get next volume iterators
     currentVol[index]++;

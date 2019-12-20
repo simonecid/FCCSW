@@ -12,7 +12,7 @@ include( DD4hep )
 
 find_package(ROOT COMPONENTS MathCore GenVector Geom REQUIRED)
 
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION Detector/DetFCChhCalDiscs)
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/compact DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME}/Detector/DetFCChhCalDiscs)
 
 gaudi_add_module(DetFCChhCalDiscs
                  src/*.cpp
@@ -21,3 +21,8 @@ gaudi_add_module(DetFCChhCalDiscs
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 dd4hep_generate_rootmap(DetFCChhCalDiscs)
+
+include(CTest)
+gaudi_add_test(simCalEndcap
+               WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+               FRAMEWORK tests/options/sim_endcap.py)

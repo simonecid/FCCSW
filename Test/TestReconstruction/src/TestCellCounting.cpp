@@ -17,15 +17,15 @@
 // ROOT
 #include "TGeoManager.h"
 
-DECLARE_ALGORITHM_FACTORY(TestCellCounting)
+DECLARE_COMPONENT(TestCellCounting)
 
-TestCellCounting::TestCellCounting(const std::string& aName, ISvcLocator* aSvcLoc) : GaudiAlgorithm(aName, aSvcLoc) {}
+TestCellCounting::TestCellCounting(const std::string& aName, ISvcLocator* aSvcLoc) :
+GaudiAlgorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {}
 
 StatusCode TestCellCounting::initialize() {
   if (GaudiAlgorithm::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  m_geoSvc = service("GeoSvc");
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -43,13 +43,15 @@ StatusCode TestCellCounting::initialize() {
     error() << "Size of names and values is not the same" << endmsg;
     return StatusCode::FAILURE;
   }
+
+  dd4hep::DDSegmentation::CellID cID = 0;
   for (uint it = 0; it < m_fieldNames.size(); it++) {
-    (*decoder)[m_fieldNames[it]] = m_fieldValues[it];
+      decoder->set(cID, m_fieldNames[it], m_fieldValues[it]);
   }
-  m_volumeId = decoder->getValue();
+  m_volumeId = cID;
 
   // count the segmentation cells for the volume
-  info() << "Counting cells for volume " << decoder->valueString() << " -> volume ID: " << m_volumeId << endmsg;
+  info() << "Counting cells for volume " << decoder->valueString(cID) << " -> volume ID: " << m_volumeId << endmsg;
   auto segmentationXY = dynamic_cast<dd4hep::DDSegmentation::CartesianGridXY*>(
       m_geoSvc->lcdd()->readout(m_readoutName).segmentation().segmentation());
   if (segmentationXY == nullptr) {

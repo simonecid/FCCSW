@@ -10,7 +10,12 @@ if (SAS)
         )
 endif(SAS)
 
+
 #---------------------------------------------------------------
+# to use ROOT targets, find_package ROOT must come before find_package Gaudi
+# (for now) # see issue Gaudi#103
+find_package(ROOT COMPONENTS Geom)
+
 # Load macros and functions for Gaudi-based projects
 find_package(GaudiProject)
 #---------------------------------------------------------------
@@ -56,5 +61,5 @@ install(FILES ${CMAKE_BINARY_DIR}/setup.sh
                     GROUP_READ
                     WORLD_READ)
 
-gaudi_project(FCCSW  v0r11
-              USE Gaudi v32r0 )
+gaudi_project(FCCSW  v0r12
+              USE Gaudi v32r2 )
